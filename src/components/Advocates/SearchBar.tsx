@@ -15,7 +15,7 @@ export const SearchBar = ({ isLoading, onChange }: ISearchBar) => {
     useEffect(() => {
         onChange(debouncedValue)
         setSearchTerm(debouncedValue)
-    }, [debouncedValue])
+    }, [debouncedValue, onChange, setSearchTerm])
 
     return (
         <div className="mb-8">
