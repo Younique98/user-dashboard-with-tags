@@ -21,7 +21,7 @@ export default function Home() {
 
                 <SearchBar
                     searchTerm={searchTerm}
-                    onChange={(e) => filteredAdvocates(e.target.value)}
+                    onChange={filteredAdvocates}
                     onClick={() => filteredAdvocates('')}
                     isLoading={isLoading}
                 />
