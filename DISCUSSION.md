@@ -1,5 +1,9 @@
 ## Unfinished Tasks and Future Enhancements
-While I am proud of the progress I made during this assignment, there are areas I wish I could have delved deeper into, given more time and resources. Below is a detailed discussion of what I couldn't accomplish and my intentions for these areas.
+While I am proud of the progress I made during this assignment, there are areas I wish I could have delved deeper into, given more time and resources. Below is a detailed discussion of what I couldn't accomplish and my intentions for these areas. 
+
+The app is also configured to return a default list of advocates, as described in the assignment instructions. While configuring a database was encouraged, I focused my efforts on improving the core functionality, performance, and user experience of the application within the given time constraints. 
+
+If given more time, I would have configured the database to demonstrate backend integration and tested retrieving advocates directly from the database.
 
 ### 1. **Data Validation**
 Although I implemented TypeScript for type safety and added error handling mechanisms with React Query, I was unable to implement comprehensive data validation at the API and frontend layers. Proper validation would ensure:
