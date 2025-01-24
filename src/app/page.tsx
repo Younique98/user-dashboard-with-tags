@@ -6,8 +6,10 @@ import { useAdvocates } from '@/hooks/useAdvocates'
 import { useAdvocateFilter } from '@/hooks/useAdvocateFilter'
 
 export default function Home() {
-     const advocates = useAdvocates()
-   const { filtered, filteredAdvocates, searchTerm } = useAdvocateFilter(advocates)
+    const { advocates, isLoading, error, retry } = useAdvocates()
+
+    const { filtered, filteredAdvocates, searchTerm } =
+        useAdvocateFilter(advocates)
 
     return (
         <main className="container mx-auto px-4 py-8">
@@ -19,7 +21,12 @@ export default function Home() {
                 onClick={() => filteredAdvocates('')}
             />
 
-            <AdvocateTable advocates={filtered} />
+            <AdvocateTable
+                advocates={filtered}
+                error={error}
+                onRetry={retry}
+                isLoading={isLoading}
+            />
         </main>
     )
 }
