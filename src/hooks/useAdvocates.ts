@@ -1,44 +1,47 @@
 import { IAdvocate } from '@/types/advocate'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
+import { TAdvocateKeys } from '@/app/api/advocates/route'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+
+export type TSortOrder = 'asc' | 'desc'
 
 export const useAdvocates = () => {
-    const [page, setPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(0)
-    const pageSize = 10
-    const [advocates, setAdvocates] = useState<IAdvocate[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const [sortBy, setSortBy] = useState<TAdvocateKeys>('firstName')
+    const [ order, setOrder ] = useState<TSortOrder>( 'asc' )
+const [page, setPage] = useState<number>(1);
 
-    const fetchAdvocates = useCallback(async () => {
-        try {
-            setIsLoading(true)
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['advocates', { page , sortBy, order, searchTerm: '' }],
+        queryFn: async ({queryKey}) => {
             const response = await fetch(
-                `/api/advocates?page=${page}&pageSize=${pageSize}`
+                `/api/advocates?sortBy=${sortBy}&order=${order}&page=${page}`
             )
-            const { data, total } = await response.json()
-
-            setAdvocates(data)
-            setTotalPages(Math.ceil(total / pageSize))
-        } catch (err) {
-            setError(
-                err instanceof Error ? err.message : 'Failed to load advocates'
-            )
-        } finally {
-            setIsLoading(false)
-        }
-    }, [page])
-
-    useEffect(() => {
-        fetchAdvocates()
-    }, [fetchAdvocates])
-
+            if ( !response.ok ) throw new Error( 'Failed to fetch advocates' )
+            const data = await response.json()
+            return {
+                advocates: data.data as IAdvocate[],
+                totalPages: data.totalPages,
+                pageSize: data.pageSize,
+                total: data.total,
+                page: data.page,
+            }
+        },
+        retry: 3,
+        placeholderData: keepPreviousData,
+        staleTime: 5000,
+    } )
     return {
-        advocates,
+        advocates : data?.advocates ?? [],
+        setSortBy,
+        setPage,
+        sortBy,
+        setOrder,
+        order,
         isLoading,
         error,
-        retry: fetchAdvocates,
-        totalPages,
-        setPage,
-        page,
+        totalPages: data?.totalPages ?? 1,
+        page: data?.page ?? 1,
+        retry: refetch,
+        pageSize: data?.pageSize || 10,
     }
 }

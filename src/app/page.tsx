@@ -6,39 +6,60 @@ import { useAdvocates } from '@/hooks/useAdvocates'
 import { useAdvocateFilter } from '@/hooks/useAdvocateFilter'
 import { ErrorBoundry } from '@/components/ErrorBoundry'
 import { PaginationControls } from '@/components/Pagination/PaginationControls'
+import { SearchProvider, useSearch } from '@/context/SearchContext'
 
 export default function Home() {
-    const { advocates, isLoading, error, retry, page, totalPages, setPage } =
-        useAdvocates()
-
+    const {
+        advocates,
+        isLoading,
+        error,
+        retry,
+        page,
+        setPage,
+        totalPages,
+        setSortBy,
+        setOrder,
+        sortBy,
+        order,
+    } = useAdvocates()
     const { filtered, filteredAdvocates, searchTerm } =
         useAdvocateFilter(advocates)
 
     return (
         <ErrorBoundry>
-            <main className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-8">Solace Advocates</h1>
+            <SearchProvider>
+                <main className="container mx-auto px-4 py-8">
+                    <h1 className="text-3xl font-bold mb-8">
+                        Solace Advocates
+                    </h1>
 
-                <SearchBar
-                    searchTerm={searchTerm}
-                    onChange={filteredAdvocates}
-                    onClick={() => filteredAdvocates('')}
-                    isLoading={isLoading}
-                />
+                    <SearchBar
+                        isLoading={isLoading}
+                        onChange={filteredAdvocates}
+                    />
 
-                <AdvocateTable
-                    advocates={filtered}
-                    error={error}
-                    onRetry={retry}
-                    isLoading={isLoading}
-                />
-                <PaginationControls
-                    currentPage={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                    isLoading={isLoading}
-                />
-            </main>
+                    <AdvocateTable
+                        advocates={filtered}
+                        error={error?.message || null}
+                        onRetry={retry}
+                        isLoading={isLoading}
+                        setSortBy={setSortBy}
+                        setOrder={setOrder}
+                        sortBy={sortBy}
+                        order={order}
+                        onSort={() => {
+                            const { setSearchTerm } = useSearch()
+                            setSearchTerm('')
+                        }}
+                    />
+                    <PaginationControls
+                        currentPage={page}
+                        totalPages={totalPages}
+                        isLoading={isLoading}
+                        setPage={setPage}
+                    />
+                </main>
+            </SearchProvider>
         </ErrorBoundry>
     )
 }
