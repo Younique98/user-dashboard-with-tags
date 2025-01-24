@@ -21,6 +21,7 @@ export default function Home() {
                     searchTerm={searchTerm}
                     onChange={(e) => filteredAdvocates(e.target.value)}
                     onClick={() => filteredAdvocates('')}
+                    isLoading={isLoading}
                 />
 
                 <AdvocateTable
