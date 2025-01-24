@@ -1,61 +1,47 @@
 import { IAdvocate } from '@/types/advocate'
-import { useCallback, useEffect, useState } from 'react'
-import { useDebounce } from './useDebounce'
+import { useState } from 'react'
 import { TAdvocateKeys } from '@/app/api/advocates/route'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export type TSortOrder = 'asc' | 'desc'
 
 export const useAdvocates = () => {
-    const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
     const [sortBy, setSortBy] = useState<TAdvocateKeys>('firstName')
     const [order, setOrder] = useState<TSortOrder>('asc')
-    const [totalPages, setTotalPages] = useState(0)
-    const [advocates, setAdvocates] = useState<IAdvocate[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
 
-    const fetchAdvocates = useCallback(async () => {
-        try {
-            setIsLoading(true)
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['advocates', sortBy, order],
+        queryFn: async () => {
             const response = await fetch(
-                `/api/advocates?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}`
+                `/api/advocates?sortBy=${sortBy}&order=${order}`
             )
-            const { data, total } = await response.json()
-            setAdvocates(data)
-            setTotalPages(Math.ceil(total / pageSize))
-        } catch (err) {
-            setError(
-                err instanceof Error ? err.message : 'Failed to load advocates'
-            )
-        } finally {
-            setIsLoading(false)
-        }
-    }, [page, pageSize, sortBy, order])
+            if ( !response.ok ) throw new Error( 'Failed to fetch advocates' )
+            const data = await response.json()
+            return {
+                advocates: data.data as IAdvocate[],
+                totalPages: data.totalPages,
+                pageSize: data.pageSize,
+                total: data.total,
+                page: data.page,
+            }
+        },
+        retry: 3,
+        placeholderData: keepPreviousData,
+        staleTime: 5000,
+    })
 
-    useEffect(() => {
-        fetchAdvocates()
-        setIsLoading(false)
-    }, [fetchAdvocates])
-
-    const retry = () => {
-        setError(null)
-        fetchAdvocates()
-    }
 
     return {
-        advocates,
-        setPageSize,
-        pageSize,
+        advocates : data?.advocates ?? [],
         setSortBy,
         sortBy,
         setOrder,
         order,
         isLoading,
         error,
-        retry,
-        totalPages,
-        setPage,
-        page,
+        totalPages: data?.totalPages ?? 1,
+        page: data?.page ?? 1,
+        retry: refetch,
+        pageSize: data?.pageSize || 10,
     }
 }

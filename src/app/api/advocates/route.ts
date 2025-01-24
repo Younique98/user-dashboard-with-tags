@@ -32,10 +32,13 @@ export async function GET(request: Request) {
 
         const start = (page - 1) * pageSize
         const paginatedData = sortedData.slice(start, start + pageSize)
-
+        const totalPages = Math.ceil(advocateData.length / pageSize) 
         return Response.json({
             data: paginatedData,
             total: advocateData.length,
+            pageSize,
+            page,
+            totalPages,
         })
     } catch (error) {
         return Response.json(

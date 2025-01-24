@@ -1,23 +1,32 @@
+' use client'
+import { IAdvocate } from '@/types/advocate'
+import { useQueryClient } from '@tanstack/react-query'
+
 interface IPaginationControls {
     currentPage: number
     totalPages: number
-    onPageChange: (page: number) => void
     isLoading: boolean
 }
 
 export const PaginationControls = ({
     currentPage,
     totalPages,
-    onPageChange,
     isLoading,
 }: IPaginationControls) => {
+    const queryClient = useQueryClient()
     const isFirstPage = currentPage === 1
     const isLastPage = currentPage === totalPages
 
+    const handlePageChange = (page: number) => {
+        queryClient.setQueryData(['advocates'], (oldData: IAdvocate[]) => ({
+            ...oldData,
+            page,
+        }))
+    }
     return (
         <div className="flex justify-center gap-2 mt-4">
             <button
-                onClick={() => onPageChange(currentPage - 1)}
+                onClick={() => handlePageChange(currentPage - 1)}
                 disabled={isFirstPage || isLoading}
                 className="px-3 py-1 bg-green-900 text-white rounded disabled:bg-green-700/50"
             >
@@ -27,7 +36,7 @@ export const PaginationControls = ({
                 Page {currentPage} of {totalPages}
             </span>
             <button
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => handlePageChange(currentPage + 1)}
                 disabled={isLastPage || isLoading}
                 className="px-3 py-1 bg-green-900 text-white rounded disabled:bg-green-700/50"
             >

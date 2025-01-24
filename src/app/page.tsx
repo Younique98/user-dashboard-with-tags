@@ -15,7 +15,6 @@ export default function Home() {
         retry,
         page,
         totalPages,
-        setPage,
         setSortBy,
         setOrder,
         sortBy,
@@ -39,7 +38,7 @@ export default function Home() {
 
                 <AdvocateTable
                     advocates={filtered}
-                    error={error}
+                    error={error?.message || null}
                     onRetry={retry}
                     isLoading={isLoading}
                     setSortBy={setSortBy}
@@ -50,7 +49,6 @@ export default function Home() {
                 <PaginationControls
                     currentPage={page}
                     totalPages={totalPages}
-                    onPageChange={setPage}
                     isLoading={isLoading}
                 />
             </main>
