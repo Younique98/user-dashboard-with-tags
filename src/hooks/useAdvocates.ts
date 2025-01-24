@@ -1,16 +1,9 @@
 import { IAdvocate } from '@/types/advocate'
 import { useCallback, useEffect, useState } from 'react'
 import { useDebounce } from './useDebounce'
+import { TAdvocateKeys } from '@/app/api/advocates/route'
 
 export type TSortOrder = 'asc' | 'desc'
-//TODO: (ET) Add type from other file so no duplicate
-type TAdvocateKeys =
-    | 'firstName'
-    | 'lastName'
-    | 'city'
-    | 'degree'
-    | 'yearsOfExperience'
-    | 'phoneNumber'
 
 export const useAdvocates = () => {
     const [page, setPage] = useState(1)
