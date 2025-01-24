@@ -19,7 +19,7 @@ export const SearchBar = ({
 
     useEffect(() => {
         onChange(debouncedValue)
-    }, [debouncedValue, onChange])
+    }, [debouncedValue])
 
     return (
         <div className="mb-8">
@@ -35,7 +35,7 @@ export const SearchBar = ({
                 <button
                     onClick={onClick}
                     disabled={isLoading}
-                    className="px-4 py-2 bg-green-900 text-white rounded-lg hover:bg-green-800 disabled:bg-green-700/50"
+                    className="px-4 py-3 bg-green-900 whitespace-nowrap text-white rounded-lg hover:bg-green-800 disabled:bg-green-700/50"
                 >
                     {isLoading ? (
                         <span className="flex items-center">

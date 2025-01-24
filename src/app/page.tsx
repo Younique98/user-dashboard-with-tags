@@ -8,8 +8,19 @@ import { ErrorBoundry } from '@/components/ErrorBoundry'
 import { PaginationControls } from '@/components/Pagination/PaginationControls'
 
 export default function Home() {
-    const { advocates, isLoading, error, retry, page, totalPages, setPage } =
-        useAdvocates()
+    const {
+        advocates,
+        isLoading,
+        error,
+        retry,
+        page,
+        totalPages,
+        setPage,
+        setSortBy,
+        setOrder,
+        sortBy,
+        order,
+    } = useAdvocates()
 
     const { filtered, filteredAdvocates, searchTerm } =
         useAdvocateFilter(advocates)
@@ -31,6 +42,10 @@ export default function Home() {
                     error={error}
                     onRetry={retry}
                     isLoading={isLoading}
+                    setSortBy={setSortBy}
+                    setOrder={setOrder}
+                    sortBy={sortBy}
+                    order={order}
                 />
                 <PaginationControls
                     currentPage={page}

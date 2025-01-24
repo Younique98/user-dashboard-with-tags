@@ -1,15 +1,15 @@
 import { IAdvocate } from '@/types/advocate'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useAdvocateFilter = (advocates: IAdvocate[]) => {
     const [filtered, setFiltered] = useState<IAdvocate[]>([])
     const [searchTerm, setSearchTerm] = useState<string>('')
 
     useEffect(() => {
-        setFiltered(advocates)
+        setFiltered( advocates )
     }, [advocates])
 
-    const filteredAdvocates = (term: string) => {
+    const filteredAdvocates = useCallback((term: string) => {
         const searchTerm = term.toLowerCase()
         setSearchTerm(searchTerm)
         const filteredResults = advocates.filter(
@@ -24,7 +24,7 @@ export const useAdvocateFilter = (advocates: IAdvocate[]) => {
                 advocate.yearsOfExperience.toString().includes(searchTerm)
         )
         setFiltered(filteredResults)
-    }
+    }, [advocates])
 
     return { filteredAdvocates, filtered, searchTerm }
 }
