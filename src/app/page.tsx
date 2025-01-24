@@ -5,9 +5,11 @@ import { SearchBar } from '@/components/Advocates/SearchBar'
 import { useAdvocates } from '@/hooks/useAdvocates'
 import { useAdvocateFilter } from '@/hooks/useAdvocateFilter'
 import { ErrorBoundry } from '@/components/ErrorBoundry'
+import { PaginationControls } from '@/components/Pagination/PaginationControls'
 
 export default function Home() {
-    const { advocates, isLoading, error, retry } = useAdvocates()
+    const { advocates, isLoading, error, retry, page, totalPages, setPage } =
+        useAdvocates()
 
     const { filtered, filteredAdvocates, searchTerm } =
         useAdvocateFilter(advocates)
@@ -28,6 +30,12 @@ export default function Home() {
                     advocates={filtered}
                     error={error}
                     onRetry={retry}
+                    isLoading={isLoading}
+                />
+                <PaginationControls
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
                     isLoading={isLoading}
                 />
             </main>

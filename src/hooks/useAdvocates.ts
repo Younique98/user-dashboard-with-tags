@@ -1,17 +1,24 @@
 import { IAdvocate } from '@/types/advocate'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useAdvocates = () => {
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
+    const pageSize = 10
     const [advocates, setAdvocates] = useState<IAdvocate[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchAdvocates = async () => {
+    const fetchAdvocates = useCallback(async () => {
         try {
             setIsLoading(true)
-            const response = await fetch('/api/advocates')
-            const { data } = await response.json()
+            const response = await fetch(
+                `/api/advocates?page=${page}&pageSize=${pageSize}`
+            )
+            const { data, total } = await response.json()
+
             setAdvocates(data)
+            setTotalPages(Math.ceil(total / pageSize))
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : 'Failed to load advocates'
@@ -19,11 +26,19 @@ export const useAdvocates = () => {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [page])
 
     useEffect(() => {
         fetchAdvocates()
-    }, [])
+    }, [fetchAdvocates])
 
-    return { advocates, isLoading, error, retry: fetchAdvocates }
+    return {
+        advocates,
+        isLoading,
+        error,
+        retry: fetchAdvocates,
+        totalPages,
+        setPage,
+        page,
+    }
 }
