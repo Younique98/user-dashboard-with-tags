@@ -25,6 +25,8 @@ export default function Home() {
     const { filtered, filteredAdvocates, searchTerm } =
         useAdvocateFilter(advocates)
 
+    const { setSearchTerm } = useSearch()
+
     return (
         <ErrorBoundry>
             <SearchProvider>
@@ -48,7 +50,6 @@ export default function Home() {
                         sortBy={sortBy}
                         order={order}
                         onSort={() => {
-                            const { setSearchTerm } = useSearch()
                             setSearchTerm('')
                         }}
                     />
