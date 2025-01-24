@@ -6,12 +6,14 @@ interface IPaginationControls {
     currentPage: number
     totalPages: number
     isLoading: boolean
+    setPage: (page: number) => void
 }
 
 export const PaginationControls = ({
     currentPage,
     totalPages,
     isLoading,
+    setPage,
 }: IPaginationControls) => {
     const queryClient = useQueryClient()
     const isFirstPage = currentPage === 1
@@ -22,6 +24,7 @@ export const PaginationControls = ({
             ...oldData,
             page,
         }))
+        setPage(page)
     }
     return (
         <div className="flex justify-center gap-2 mt-4">

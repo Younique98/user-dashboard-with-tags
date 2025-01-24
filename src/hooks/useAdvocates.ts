@@ -7,13 +7,14 @@ export type TSortOrder = 'asc' | 'desc'
 
 export const useAdvocates = () => {
     const [sortBy, setSortBy] = useState<TAdvocateKeys>('firstName')
-    const [order, setOrder] = useState<TSortOrder>('asc')
+    const [ order, setOrder ] = useState<TSortOrder>( 'asc' )
+const [page, setPage] = useState<number>(1);
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ['advocates', sortBy, order],
-        queryFn: async () => {
+        queryKey: ['advocates', { page , sortBy, order, searchTerm: '' }],
+        queryFn: async ({queryKey}) => {
             const response = await fetch(
-                `/api/advocates?sortBy=${sortBy}&order=${order}`
+                `/api/advocates?sortBy=${sortBy}&order=${order}&page=${page}`
             )
             if ( !response.ok ) throw new Error( 'Failed to fetch advocates' )
             const data = await response.json()
@@ -28,12 +29,11 @@ export const useAdvocates = () => {
         retry: 3,
         placeholderData: keepPreviousData,
         staleTime: 5000,
-    })
-
-
+    } )
     return {
         advocates : data?.advocates ?? [],
         setSortBy,
+        setPage,
         sortBy,
         setOrder,
         order,

@@ -1,24 +1,20 @@
+import { useSearch } from '@/context/SearchContext'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useEffect, useState } from 'react'
 
 interface ISearchBar {
-    searchTerm: string
-    onChange: (term: string) => void
-    onClick: () => void
     isLoading: boolean
+    onChange: (term: string) => void
 }
 
-export const SearchBar = ({
-    searchTerm,
-    onChange,
-    onClick,
-    isLoading,
-}: ISearchBar) => {
+export const SearchBar = ({ isLoading, onChange }: ISearchBar) => {
+    const { searchTerm, setSearchTerm } = useSearch()
     const [inputValue, setInputValue] = useState(searchTerm)
     const debouncedValue = useDebounce(inputValue, 300)
 
     useEffect(() => {
         onChange(debouncedValue)
+        setSearchTerm(debouncedValue)
     }, [debouncedValue])
 
     return (
@@ -33,7 +29,7 @@ export const SearchBar = ({
                     disabled={isLoading}
                 />
                 <button
-                    onClick={onClick}
+                    onClick={() => setSearchTerm('')}
                     disabled={isLoading}
                     className="px-4 py-3 bg-green-900 whitespace-nowrap text-white rounded-lg hover:bg-green-800 disabled:bg-green-700/50"
                 >

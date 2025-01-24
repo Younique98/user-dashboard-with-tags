@@ -14,6 +14,7 @@ interface IAdvocateTable {
     onRetry: () => void
     setSortBy: (sortBy: TAdvocateKeys) => void
     setOrder: (order: TSortOrder) => void
+    onSort: () => void
 }
 
 export const AdvocateTable = ({
@@ -25,9 +26,16 @@ export const AdvocateTable = ({
     setOrder,
     sortBy,
     order,
+    onSort,
 }: IAdvocateTable) => {
     if (error) return <ErrorMessage error={error} onRetry={onRetry} />
     if (isLoading) return <TableSkeleton />
+
+    const handleSort = (value: TAdvocateKeys) => {
+        setSortBy(value)
+        onSort()
+    }
+
     return (
         <div className="overflow-x-auto shadow-lg rounded-lg">
             <div className="flex items-center justify-between p-4 bg-gray-50">
@@ -41,7 +49,7 @@ export const AdvocateTable = ({
                             disabled={isLoading}
                             className="p-2 border border-gray-300 rounded-md w-full md:w-auto"
                             onChange={(e) =>
-                                setSortBy(e.target.value as TAdvocateKeys)
+                                handleSort(e.target.value as TAdvocateKeys)
                             }
                         >
                             <option value="firstName">First Name</option>
