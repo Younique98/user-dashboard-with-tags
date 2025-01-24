@@ -1,91 +1,25 @@
 'use client'
 
-import { useEffect, useState, ChangeEvent } from 'react'
-import { IAdvocate } from '@/types/advocate'
+import { AdvocateTable } from '@/components/Advocates/AdvocateTable'
+import { SearchBar } from '@/components/Advocates/SearchBar'
+import { useAdvocates } from '@/hooks/useAdvocates'
+import { useAdvocateFilter } from '@/hooks/useAdvocateFilter'
 
 export default function Home() {
-    const [advocates, setAdvocates] = useState<IAdvocate[]>([])
-    const [filteredAdvocates, setFilteredAdvocates] = useState<IAdvocate[]>([])
-    const [searchTerm, setSearchTerm] = useState<string>('')
-
-    useEffect(() => {
-        const fetchAdvocates = async () => {
-            const response = await fetch('/api/advocates')
-            const { data } = await response.json()
-            setAdvocates(data)
-            setFilteredAdvocates(data)
-        }
-        fetchAdvocates()
-    }, [])
-
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const searchTerm = e.target.value.toLowerCase()
-        setSearchTerm(searchTerm)
-
-        const filteredAdvocates = advocates.filter(
-            (advocate) =>
-                advocate.firstName.includes(searchTerm) ||
-                advocate.lastName.includes(searchTerm) ||
-                advocate.city.includes(searchTerm) ||
-                advocate.degree.includes(searchTerm) ||
-                advocate.specialties.includes(searchTerm) ||
-                advocate.yearsOfExperience.toString().includes(searchTerm)
-        )
-
-        // Note (ET) - removed this as its an antipattern and shouldn't manipulate DOM directly    document.getElementById("search-term").innerHTML = searchTerm;
-        setFilteredAdvocates(filteredAdvocates)
-    }
-
-    const onClick = () => {
-        setFilteredAdvocates(advocates)
-    }
+     const advocates = useAdvocates()
+   const { filtered, filteredAdvocates, searchTerm } = useAdvocateFilter(advocates)
 
     return (
-        <main style={{ margin: '24px' }}>
-            <h1>Solace Advocates</h1>
-            <br />
-            <br />
-            <div>
-                <p>Search</p>
-                <p>Searching for: {searchTerm}</p>
-                <input
-                    style={{ border: '1px solid black' }}
-                    onChange={onChange}
-                />
-                <button onClick={onClick}>Reset Search</button>
-            </div>
-            <br />
-            <br />
-            <table>
-                <thead>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>City</th>
-                    <th>Degree</th>
-                    <th>Specialties</th>
-                    <th>Years of Experience</th>
-                    <th>Phone Number</th>
-                </thead>
-                <tbody>
-                    {filteredAdvocates.map((advocate) => {
-                        return (
-                            <tr>
-                                <td>{advocate.firstName}</td>
-                                <td>{advocate.lastName}</td>
-                                <td>{advocate.city}</td>
-                                <td>{advocate.degree}</td>
-                                <td>
-                                    {advocate.specialties.map((s) => (
-                                        <div>{s}</div>
-                                    ))}
-                                </td>
-                                <td>{advocate.yearsOfExperience}</td>
-                                <td>{advocate.phoneNumber}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+        <main className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold mb-8">Solace Advocates</h1>
+
+            <SearchBar
+                searchTerm={searchTerm}
+                onChange={(e) => filteredAdvocates(e.target.value)}
+                onClick={() => filteredAdvocates('')}
+            />
+
+            <AdvocateTable advocates={filtered} />
         </main>
     )
 }
