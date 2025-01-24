@@ -2,6 +2,9 @@
 
 import { useEffect, useState, ChangeEvent } from 'react'
 import { IAdvocate } from '@/types/advocate'
+import { formatPhoneNumber } from '@/helpers/formatters'
+import { AdvocateTable } from '@/components/Advocates/AdvocateTable'
+import { SearchBar } from '@/components/Advocates/SearchBar'
 
 export default function Home() {
     const [advocates, setAdvocates] = useState<IAdvocate[]>([])
@@ -41,51 +44,16 @@ export default function Home() {
     }
 
     return (
-        <main style={{ margin: '24px' }}>
-            <h1>Solace Advocates</h1>
-            <br />
-            <br />
-            <div>
-                <p>Search</p>
-                <p>Searching for: {searchTerm}</p>
-                <input
-                    style={{ border: '1px solid black' }}
-                    onChange={onChange}
-                />
-                <button onClick={onClick}>Reset Search</button>
-            </div>
-            <br />
-            <br />
-            <table>
-                <thead>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>City</th>
-                    <th>Degree</th>
-                    <th>Specialties</th>
-                    <th>Years of Experience</th>
-                    <th>Phone Number</th>
-                </thead>
-                <tbody>
-                    {filteredAdvocates.map((advocate) => {
-                        return (
-                            <tr>
-                                <td>{advocate.firstName}</td>
-                                <td>{advocate.lastName}</td>
-                                <td>{advocate.city}</td>
-                                <td>{advocate.degree}</td>
-                                <td>
-                                    {advocate.specialties.map((s) => (
-                                        <div>{s}</div>
-                                    ))}
-                                </td>
-                                <td>{advocate.yearsOfExperience}</td>
-                                <td>{advocate.phoneNumber}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+        <main className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold mb-8">Solace Advocates</h1>
+
+            <SearchBar
+                searchTerm={searchTerm}
+                onChange={onChange}
+                onClick={onClick}
+            />
+
+            <AdvocateTable advocates={filteredAdvocates} />
         </main>
     )
 }
