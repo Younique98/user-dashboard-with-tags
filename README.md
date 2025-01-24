@@ -90,11 +90,26 @@ While I am proud of the completed work, I plan to continue addressing the follow
 - Write automated tests for unit, integration, and E2E coverage.
 
 ## Screenshots and Demos
-### PR with Detailed Documentation
-![PR Screenshot]()
+## Screenshots ( Come Along on the Journey) 
 
-### Video Demo
-![Video Preview]()
+<img width="1095" alt="Screenshot 2025-01-24 at 8 33 02 AM" src="https://github.com/user-attachments/assets/a43cf7bb-a0db-46d5-ab48-0d24b623136c" />
+
+https://github.com/user-attachments/assets/4a0b1986-d345-47cf-b3e8-1152b639cf9b
+
+
+
+https://github.com/user-attachments/assets/73e26d21-7443-465b-a1e3-250a47cc97cc
+
+<img width="1642" alt="Screenshot 2025-01-24 at 4 10 42 PM" src="https://github.com/user-attachments/assets/f2580f1e-f66b-4e8e-91d8-610ea69f15df" />
+<img width="1455" alt="Screenshot 2025-01-24 at 4 29 58 PM" src="https://github.com/user-attachments/assets/f1da07cb-c554-4ec3-b674-31bd5ba38d63" />
+
+![Screenshot 2025-01-24 at 5 10 52 PM](https://github.com/user-attachments/assets/8dc10bca-70fa-4b6b-bb25-a8b13079769d)
+![Screenshot 2025-01-24 at 5 11 25 PM](https://github.com/user-attachments/assets/3d394bc5-360b-4700-a9a6-3b4f30b67352)
+
+
+
+## Related Issues
+Closes #[Project Board & Milestones](https://github.com/Younique98/solace-candidate-assignment/milestones)
 
 ## Conclusion
 This project allowed me to demonstrate my strengths in debugging, optimizing, and implementing features under tight deadlines. I'm excited about this opportunity and look forward to bringing my skills to your team to solve meaningful challenges and contribute to impactful projects.
