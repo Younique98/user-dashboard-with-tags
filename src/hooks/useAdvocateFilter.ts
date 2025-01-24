@@ -14,11 +14,13 @@ export const useAdvocateFilter = (advocates: IAdvocate[]) => {
         setSearchTerm(searchTerm)
         const filteredResults = advocates.filter(
             (advocate) =>
-                advocate.firstName.includes(searchTerm) ||
-                advocate.lastName.includes(searchTerm) ||
-                advocate.city.includes(searchTerm) ||
-                advocate.degree.includes(searchTerm) ||
-                advocate.specialties.includes(searchTerm) ||
+                advocate.firstName.toLowerCase().startsWith(searchTerm) ||
+                advocate.lastName.toLowerCase().startsWith(searchTerm) ||
+                advocate.city.toLowerCase().startsWith(searchTerm) ||
+                advocate.degree.toLowerCase().startsWith(searchTerm) ||
+                advocate.specialties.some((specialty) =>
+                    specialty.toLowerCase().includes(searchTerm)
+                ) ||
                 advocate.yearsOfExperience.toString().includes(searchTerm)
         )
         setFiltered(filteredResults)
