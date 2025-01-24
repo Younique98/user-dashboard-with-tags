@@ -16,8 +16,8 @@ export const useAdvocates = () => {
     const [error, setError] = useState<string | null>(null)
 
     const fetchAdvocates = useCallback(async () => {
-        setIsLoading(true)
         try {
+            setIsLoading(true)
             const response = await fetch(
                 `/api/advocates?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}`
             )
@@ -25,7 +25,6 @@ export const useAdvocates = () => {
             setAdvocates(data)
             setTotalPages(Math.ceil(total / pageSize))
         } catch (err) {
-            console.error('Error fetching advocates:', err)
             setError(
                 err instanceof Error ? err.message : 'Failed to load advocates'
             )
@@ -36,6 +35,7 @@ export const useAdvocates = () => {
 
     useEffect(() => {
         fetchAdvocates()
+        setIsLoading(false)
     }, [fetchAdvocates])
 
     const retry = () => {

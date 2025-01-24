@@ -56,7 +56,6 @@ export const AdvocateTable = ({
                         <select
                             value={order}
                             className="p-2 border border-gray-300 rounded-md"
-                            // onChange={(e) => setOrder(e.target.value)}
                             onChange={(e) => {
                                 const value = e.target.value
                                 if (value === 'asc' || value === 'desc') {
@@ -70,13 +69,13 @@ export const AdvocateTable = ({
                     </label>
                 </div>
             </div>
-            <div className="relative">
+            <div className="relative transition-all duration-300 ease-in-out">
                 {isLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300">
+                        <div className="w-6 h-6 border-4 border-green-900 border-t-transparent rounded-full animate-spin"></div>
                     </div>
                 )}
-                <table className="w-full border-collapse bg-white">
+                <table className="w-full border-collapse bg-white transition-opacity duration-300">
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
@@ -103,10 +102,10 @@ export const AdvocateTable = ({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {advocates.map((advocate) => {
+                        {advocates.map((advocate, index) => {
                             return (
                                 <tr
-                                    key={advocate.id}
+                                    key={`advocate-${advocate.id}-${index}`}
                                     className="hover:bg-gray-50"
                                 >
                                     <td className="px-6 py-4 text-sm text-gray-900">
@@ -123,9 +122,9 @@ export const AdvocateTable = ({
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-900">
                                         {advocate.specialties.map(
-                                            (specialty) => (
+                                            (specialty, index) => (
                                                 <span
-                                                    key={specialty}
+                                                    key={`${advocate.id}-${specialty}-${index}`}
                                                     className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-700 text-white mr-2 mb-1"
                                                 >
                                                     {specialty}

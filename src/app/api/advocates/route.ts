@@ -15,41 +15,31 @@ export async function GET(request: Request) {
     // const data = await db.select().from(advocates);
 
     const { searchParams } = new URL(request.url)
+    const page = Number(searchParams.get('page')) || 1
+    const pageSize = Number(searchParams.get('pageSize')) || 10
     const sortBy: TAdvocateKeys =
         (searchParams.get('sortBy') as TAdvocateKeys) || 'firstName'
     const order = searchParams.get('order') || 'asc'
-    const page = Number(searchParams.get('page')) || 1
-    const pageSize = Number(searchParams.get('pageSize')) || 10
 
     try {
-        const sortedData = [...advocateData].sort((a, b) => {
-            const aValue = a[sortBy as keyof typeof a]
-            const bValue = b[sortBy as keyof typeof b]
-
-            if (typeof aValue === 'number' && typeof bValue === 'number') {
-                return order === 'asc' ? aValue - bValue : bValue - aValue
-            }
+        let sortedData = [...advocateData].sort((a, b) => {
+            const aValue = a[sortBy]
+            const bValue = b[sortBy]
             return order === 'asc'
                 ? String(aValue).localeCompare(String(bValue))
                 : String(bValue).localeCompare(String(aValue))
         })
 
         const start = (page - 1) * pageSize
-        const end = start + pageSize
-        const paginatedData = sortedData.slice(start, end)
+        const paginatedData = sortedData.slice(start, start + pageSize)
 
         return Response.json({
             data: paginatedData,
             total: advocateData.length,
-            page,
-            pageSize,
         })
     } catch (error) {
         return Response.json(
-            {
-                error: 'Failed to fetch advocates',
-                message: (error as Error).message,
-            },
+            { error: 'Failed to fetch advocates' },
             { status: 500 }
         )
     }
