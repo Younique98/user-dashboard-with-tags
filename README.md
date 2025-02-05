@@ -1,44 +1,3 @@
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-Install dependencies
-
-```bash
-npm i
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-## Database set up
-
-The app is configured to return a default list of advocates. This will allow you to get the app up and running without needing to configure a database. If you’d like to configure a database, you’re encouraged to do so. You can uncomment the url in `.env` and the line in `src/app/api/advocates/route.ts` to test retrieving advocates from the database.
-
-1. Feel free to use whatever configuration of postgres you like. The project is set up to use docker-compose.yml to set up postgres. The url is in .env.
-
-```bash
-docker compose up -d
-```
-
-2. Create a `solaceassignment` database.
-
-3. Push migration to the database
-
-```bash
-npx drizzle-kit push
-```
-
-4. Seed the database
-
-```bash
-curl -X POST http://localhost:3000/api/seed
-```
-
 ## Advocate Matching Table Assignment
 
 This project showcases my ability to analyze, improve, and optimize an existing codebase within a tight timeframe. My goal was to fix bugs, implement key features, and deliver a performant and user-friendly application.
@@ -112,6 +71,48 @@ Closes #[Project Board & Milestones](https://github.com/Younique98/solace-candid
 
 ## Conclusion
 This project allowed me to demonstrate my strengths in debugging, optimizing, and implementing features under tight deadlines. I'm excited about this opportunity and look forward to bringing my skills to your team to solve meaningful challenges and contribute to impactful projects.
+
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Getting Started
+
+Install dependencies
+
+```bash
+npm i
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+## Database set up
+
+The app is configured to return a default list of advocates. This will allow you to get the app up and running without needing to configure a database. If you’d like to configure a database, you’re encouraged to do so. You can uncomment the url in `.env` and the line in `src/app/api/advocates/route.ts` to test retrieving advocates from the database.
+
+1. Feel free to use whatever configuration of postgres you like. The project is set up to use docker-compose.yml to set up postgres. The url is in .env.
+
+```bash
+docker compose up -d
+```
+
+2. Create a `solaceassignment` database.
+
+3. Push migration to the database
+
+```bash
+npx drizzle-kit push
+```
+
+4. Seed the database
+
+```bash
+curl -X POST http://localhost:3000/api/seed
+```
+
 
 
 
